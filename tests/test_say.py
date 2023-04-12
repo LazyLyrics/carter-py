@@ -1,58 +1,90 @@
-import unittest
-from carterpy.carter import Carter
-from carterpy.classes import Interaction
-from dotenv import load_dotenv
-load_dotenv()
+# tests/test_carter.py
 import os
-import logging
-import sys
+import unittest
+from dotenv import load_dotenv
+from carterpy.carter import Carter, URLS
+import responses
+from helpers import NonStringConvertible
+load_dotenv()
 
 class TestCarter(unittest.TestCase):
 
-    class UnconvertibleToString:
-            def __str__(self):
-                raise Exception("Cannot convert to string")
     def setUp(self):
-        self.carter = Carter(os.environ.get("CARTER_API_KEY"))
+        self.api_key = os.getenv("CARTER_API_KEY")
+        self.carter = Carter(self.api_key)
 
-    def test_valid_say(self):
-        logger = logging.getLogger( "SomeTest.testSomething" )
-        # Test valid input
-        input_text = "Hello"
-        player_id = "12345"
-        interaction = self.carter.say(input_text, player_id)
-        logger.debug(interaction)
-        self.assertIsInstance(interaction, Interaction)
-        self.assertEqual(interaction.input_text, input_text)
-        self.assertTrue(interaction.ok)
-        self.assertEqual(interaction.status_code, 200)
-        self.assertEqual(interaction.status_message, "OK")
-        self.assertIsNotNone(interaction.output_text)
-        self.assertIsNotNone(interaction.forced_behaviours)
+    @responses.activate
+    def test_say_success(self):
+      # Mock API response
+      responses.add(
+          responses.POST,
+          URLS["say"],
+          json={
+              "output": {
+                  "text": "RESPONSE FROM CHARACTER",
+                  "audio": "AUDIO ID"
+              },
+              "input": "INPUT MESSAGE RECEIVED",
+              "forced_behaviours": [
+                  {
+                      "name": "NAME OF BEHAVIOUR"
+                  }
+              ]
+          },
+          status=200
+      )
 
-    def test_valid_text_unconvertible_player_id(self):
-        input_text = "Hello"
-        player_id = TestCarter.UnconvertibleToString()
+      text = "Hi Carter!"
+      player_id = "1234"
 
-        with self.assertRaises(TypeError):
-            interaction = self.carter.say(input_text, player_id)
+      interaction = self.carter.say(text, player_id)
 
-    def test_unconvertible_text_valid_player_id(self):
-        input_text = TestCarter.UnconvertibleToString()
-        player_id = "12345"
+      self.assertTrue(interaction.ok)
+      self.assertEqual(interaction.status_code, 200)
+      self.assertEqual(interaction.input_text, text)
+      self.assertEqual(interaction.output_text, 'RESPONSE FROM CHARACTER')
 
-        with self.assertRaises(TypeError):
-            interaction = self.carter.say(input_text, player_id)
+    def test_say_invalid_text(self):
+      invalid_text = NonStringConvertible()
+      player_id = "1234"
 
-    def test_unconvertible_text_unconvertible_player_id(self):
-        input_text = TestCarter.UnconvertibleToString()
-        player_id = TestCarter.UnconvertibleToString()
+      with self.assertRaises(TypeError) as context:
+          self.carter.say(invalid_text, player_id)
+          print(context.exception)
 
-        with self.assertRaises(TypeError):
-            interaction = self.carter.say(input_text, player_id)
+    def test_say_invalid_player_id(self):
+      text = "Hi Carter!"
+      invalid_player_id = NonStringConvertible()
 
+      with self.assertRaises(TypeError):
+          self.carter.say(text, invalid_player_id)
+
+    @responses.activate
+    def test_say_api_error(self):
+      # Mock API response
+      responses.add(
+          responses.POST,
+          URLS["say"],
+          json={
+              "error": {
+                  "message": "Invalid API key",
+              },
+          },
+          status=403
+      )
+
+      text = "Hi Carter!"
+      player_id = "1234"
+
+      interaction = self.carter.say(text, player_id)
+
+      self.assertFalse(interaction.ok)
+      self.assertEqual(interaction.status_code, 403)
+      self.assertEqual(interaction.status_message, "Forbidden")
+
+    def test_personalise(self):
+        # Add test cases for the 'personalise' method (if you want to implement it)
+        pass
 
 if __name__ == '__main__':
-    logging.basicConfig( stream=sys.stderr )
-    logging.getLogger( "SomeTest.testSomething" ).setLevel( logging.DEBUG )
-    unittest.main(buffer=False)
+    unittest.main()
