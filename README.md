@@ -1,6 +1,6 @@
 # `carterpy`: A Python Wrapper for the Carter API
 
-`carterpy` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses, with the ability to add more complex functionality 
+`carterpy` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses with minimal setup, and with the ability to add more complex functionality in upcoming releases.
 
 ## Installation
 
