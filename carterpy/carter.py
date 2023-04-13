@@ -2,13 +2,9 @@ import requests
 import json
 import time
 from .classes import Interaction, OpenerInteraction, PersonaliseInteraction
-from .utils import convert_to_string
+from .utils import convert_to_string, URLS
 
-URLS = {
-    "say": "https://api.carterlabs.ai/chat",
-    "opener": "https://api.carterlabs.ai/opener",
-    "personalise": "https://api.carterlabs.ai/personalise",
-}
+
 
 class Carter:
     def __init__(self, api_key):

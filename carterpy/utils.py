@@ -1,5 +1,11 @@
 import datetime
 
+URLS = {
+    "say": "https://api.carterlabs.ai/chat",
+    "opener": "https://api.carterlabs.ai/opener",
+    "personalise": "https://api.carterlabs.ai/personalise",
+}
+
 def convert_to_string(variable_name, value):
     try:
         return str(value)
