@@ -1,26 +1,24 @@
-# `carterpy`: A Python Wrapper for the Carter API
+# carter-py: A Python Wrapper for the Carter API
 
-`carterpy` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses with minimal setup, and with the ability to add more complex functionality in upcoming releases.
+`carter-py` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses with minimal setup, and with the ability to add more complex functionality in upcoming releases.
 
 ## Installation
 
-To install `carterpy`, you can use pip, Python's package manager. Simply run the following command:
-
 ```bash
-pip install `carterpy`
+pip install `carter-py`
 ```
 
-This will install the latest version of `carterpy` and its dependencies.
+This will install the latest version of `carter-py` and its dependencies.
 
-**Note**: `carterpy` has two classes, a Carter class and an AsyncCarter class. The AsyncCarter class is used for asynchronous usage of the API. The Carter class is used for synchronous usage of the API. An example of asynchronous usage can be found below.
+**Note**: `carter-py` has two classes, a Carter class and an AsyncCarter class. The AsyncCarter class is used for asynchronous usage of the API. The Carter class is used for synchronous usage of the API. An example of asynchronous usage can be found below.
 
 ## Usage
 
-To use `carterpy`, you will need to obtain an API key from the Carter website. Once you have your API key, you can use it to create a Carter object and start sending messages. Here's an example:
+To use `carter-py`, you will need to obtain an API key from the Carter website. Once you have your API key, you can use it to create a Carter object and start sending messages. Here's an example:
 
 ```python
 
-from `carterpy` import Carter
+from `carter-py` import Carter
 
 
 # Replace YOUR_API_KEY with your actual API key
@@ -80,7 +78,7 @@ class Interaction():
     status_message (str): The status message of the response.
 ```
 
-Some properties may be None if the interaction was not successful. Always check the `ok` property before using the other properties, if there was an error with `carterpy` then all data related to output (`output_text, output_audio, forced_behaviours, status_code, status_message`) will be `None`. If there was an error with the API, then the `ok` property will be `False` and the `status_code` and `status_message` properties will be populated with the error information, but output data will still be None.
+Some properties may be None if the interaction was not successful. Always check the `ok` property before using the other properties, if there was an error with `carter-py` then all data related to output (`output_text, output_audio, forced_behaviours, status_code, status_message`) will be `None`. If there was an error with the API, then the `ok` property will be `False` and the `status_code` and `status_message` properties will be populated with the error information, but output data will still be None.
 
 ### History
 
@@ -102,16 +100,16 @@ print(carter.history[1].input_text)
 
 ### Upcoming features
 
-- Soon you'll be able to register skills with your agent, this will allow you to trigger functions in your code when `carterpy` detects forced behaviours in the response. This could trigger some other functionality in your code, and even customise the response to add extra data.
+- Soon you'll be able to register skills with your agent, this will allow you to trigger functions in your code when `carter-py` detects forced behaviours in the response. This could trigger some other functionality in your code, and even customise the response to add extra data.
 - Improved logging, including the ability to pass your logger to the `Carter` object for debugging.
 
-### `carterjs`
+### carter-js
 
-`carterpy` is a Python wrapper for the Carter API. If you're looking for a JavaScript wrapper, check out [`carterjs`](https://github.com/LazyLyrics/carter-js)
+`carter-py` is a Python wrapper for the Carter API. If you're looking for a JavaScript wrapper, check out [`carter-js`](https://github.com/LazyLyrics/carter-js)
 
 ### Contributing
 
-If you would like to contribute to `carterpy`, you can do so by opening an issue or pull request on the GitHub repository.
+If you would like to contribute to `carter-py`, you can do so by opening an issue or pull request on the GitHub repository.
 
 ## Asynchronous Usage
 

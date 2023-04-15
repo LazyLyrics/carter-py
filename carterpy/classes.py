@@ -15,6 +15,7 @@ class Interaction():
         self.timestamp = iso_now()
         self.triggered_skills = []
         self.executed_skills = []
+        self.carter_data = response_data["carter_data"] if response_data is not None else None
 
         # set response params
         if response_data is not None:
@@ -72,8 +73,8 @@ class Interaction():
             return f"{self.type.capitalize()} interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"
 
     def print_verbose(self):
+        print("=====================================")
+        print(f"{self.type.upper()} INTERACTION {self.id}")
         for key, value in self.__dict__.items():
-            print("=====================================")
-            print(f"{self.type.upper()} INTERACTION {self.id}")
             print(f"{key}: {value}")
-            print("=====================================")
+        print("=====================================")
