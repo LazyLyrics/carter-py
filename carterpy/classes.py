@@ -58,7 +58,7 @@ class Interaction():
         if "text" in self.payload:
             self.input_text = self.payload["text"]
         else:
-            self.input_text = None
+            self.input_text = self.type
 
         if "player_id" in self.payload:
             self.player_id = self.payload["player_id"]
