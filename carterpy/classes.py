@@ -16,6 +16,7 @@ class Interaction():
         self.triggered_skills = []
         self.executed_skills = []
         self.carter_data = response_data["carter_data"] if response_data is not None else None
+        self.url = response_data["url"] if response_data is not None else None
 
         # set response params
         if response_data is not None:

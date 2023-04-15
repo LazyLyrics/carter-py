@@ -12,7 +12,7 @@ async def asyncRequest(url, data, headers):
             async with session.post(url, data=json.dumps(data), headers=headers) as resp:
                 response = resp
                 carter_data = await response.json()
-                return {"carter_data": carter_data, "status_code": response.status, "status_message": response.reason, "ok": response.ok}
+                return {"url": response.url, "carter_data": carter_data, "status_code": response.status, "status_message": response.reason, "ok": response.ok}
 
     except (aiohttp.ClientError, json.JSONDecodeError) as e:
         return None

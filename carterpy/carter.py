@@ -10,7 +10,7 @@ def carterRequest(url, data, headers):
         response = requests.post(
             url, data=json.dumps(data), headers=headers)
         carter_data = response.json()
-        return {"carter_data": carter_data, "status_code": response.status_code, "status_message": response.reason, "ok": response.ok}
+        return {"carter_data": carter_data, "status_code": response.status_code, "status_message": response.reason, "ok": response.ok, "url": response.url}
     except (requests.exceptions.RequestException, json.JSONDecodeError) as e:
         return None
 
