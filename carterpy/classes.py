@@ -26,12 +26,22 @@ class Interaction():
                 if "output" in carter_data:
                     self.output_text = carter_data["output"]["text"]
                     self.output_audio = carter_data["output"]["audio"]
+                else:
+                    self.output_text = None
+                    self.output_audio = None
+
                 if "content" in carter_data:
                     self.output_text = carter_data["content"]
                 if "sentence" in carter_data:
                     self.output_text = carter_data["sentence"]
+                if "output_text" not in self.__dict__:
+                    self.output_text = None
+
+
                 if "forced_behaviours" in carter_data:
                     self.forced_behaviours = carter_data["forced_behaviours"]
+                else:
+                    self.forced_behaviours = None
             else:
                 self.ok = False
                 self.output_text = None

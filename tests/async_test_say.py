@@ -71,14 +71,14 @@ class TestAsyncCarter(asynctest.TestCase):
                 reason="Forbidden"
             )
 
-        text = "Hi Carter!"
-        player_id = "1234"
+            text = "Hi Carter!"
+            player_id = "1234"
 
-        interaction = await self.carter.say(text, player_id)
+            interaction = await self.carter.say(text, player_id)
 
-        self.assertFalse(interaction.ok)
-        self.assertEqual(interaction.status_code, 403)
-        self.assertEqual(interaction.status_message, "Forbidden")
+            self.assertFalse(interaction.ok)
+            self.assertEqual(interaction.status_code, 403)
+            self.assertEqual(interaction.status_message, "Forbidden")
 
 
 if __name__ == '__main__':
