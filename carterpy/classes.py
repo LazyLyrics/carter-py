@@ -1,69 +1,57 @@
 import uuid
 from .utils import iso_now
-class Interaction():
-    def __init__(self, payload, response, time_taken):
-        carter_data = response.json()
-        # Carter data
-        self.input_text = payload['text']
-        self.output_text = carter_data['output']['text'] if response.ok else None
-        self.forced_behaviours = carter_data['forced_behaviours'] if response.ok else None
+import uuid
+from .utils import iso_now
 
-        # carter-py data
+
+class Interaction():
+    def __init__(self, type, payload, response_data, time_taken):
+
+        # set easy stuff
+        self.type = type
         self.id = uuid.uuid1()
-        self.ok = response.ok
-        self.response = response
-        self.status_code = response.status_code
-        self.status_message = response.reason
+        self.payload = payload
+        self.time_taken = time_taken
+        self.timestamp = iso_now()
         self.triggered_skills = []
         self.executed_skills = []
-        self.time_taken = time_taken
-        self.timestamp = iso_now()
+
+        # set response params
+        if response_data is not None:
+            self.ok = response_data["ok"]
+            self.status_code = response_data["status_code"]
+            self.status_message = response_data["status_message"]
+            carter_data = response_data["carter_data"]
+            if carter_data is not None:
+                if "output" in carter_data:
+                    self.output_text = carter_data["output"]["text"]
+                    self.output_audio = carter_data["output"]["audio"]
+                if "content" in carter_data:
+                    self.output_text = carter_data["content"]
+                if "sentence" in carter_data:
+                    self.output_text = carter_data["sentence"]
+                if "forced_behaviours" in carter_data:
+                    self.forced_behaviours = carter_data["forced_behaviours"]
+            else:
+                self.ok = False
+                self.output_text = None
+                self.forced_behaviours = None
+
+        else:
+            self.ok = False
+            self.status_code = None
+            self.status_message = None
+            self.output_text = None
+            self.forced_behaviours = None
+
+        # Payload data
+        if "text" in self.payload:
+            self.input_text = self.payload["text"]
+        elif "player_id" in self.payload:
+            self.player_id = self.payload["player_id"]
 
     def __str__(self):
-        if self.response.ok:
-            return f"Interaction {self.id} - {self.input_text} -> {self.output_text}"
+        if self.ok:
+            return f"{self.type.capitalize()} interaction {self.id} - {self.input_text} -> {self.output_text}"
         else:
-            return f"Interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"
-
-class OpenerInteraction():
-    def __init__(self, payload, response, time_taken):
-        carter_data = response.json()
-        # Carter data
-        self.output_text = carter_data['sentence'] if response.ok else None
-
-        # carter-py data
-        self.id = uuid.uuid1()
-        self.ok = response.ok
-        self.response = response
-        self.status_code = response.status_code
-        self.status_message = response.reason
-        self.time_taken = time_taken
-        self.timestamp = iso_now()
-
-    def __str__(self):
-        if self.response.ok:
-            return f"Interaction {self.id} - opener -> {self.output_text}"
-        else:
-            return f"Interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"
-
-class PersonaliseInteraction():
-    def __init__(self, payload, response, time_taken):
-        carter_data = response.json()
-        # Carter data
-        self.input_text = payload['text']
-        self.output_text = carter_data['content'] if response.ok else None
-
-        # carter-py data
-        self.id = uuid.uuid1()
-        self.ok = response.ok
-        self.response = response
-        self.status_code = response.status_code
-        self.status_message = response.reason
-        self.time_taken = time_taken
-        self.timestamp = iso_now()
-
-    def __str__(self):
-        if self.response.ok:
-            return f"Interaction {self.id} - {self.input_text} -> {self.output_text}"
-        else:
-            return f"Interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"
+            return f"{self.type.capitalize()} interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"

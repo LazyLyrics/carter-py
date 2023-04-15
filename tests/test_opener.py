@@ -8,6 +8,7 @@ from helpers import NonStringConvertible
 
 load_dotenv()
 
+
 class TestCarter(unittest.TestCase):
 
     def setUp(self):
@@ -16,23 +17,23 @@ class TestCarter(unittest.TestCase):
 
     @responses.activate
     def test_opener_success(self):
-      # Mock API response
-      responses.add(
-          responses.POST,
-          URLS["opener"],
-          json={
-              "sentence": "Hello, I am Carter!",
-          },
-          status=200
-      )
+        # Mock API response
+        responses.add(
+            responses.POST,
+            URLS["opener"],
+            json={
+                "sentence": "Hello, I am Carter!",
+            },
+            status=200
+        )
 
-      player_id = "1234"
+        player_id = "success"
 
-      interaction = self.carter.opener(player_id)
+        interaction = self.carter.opener(player_id)
 
-      self.assertTrue(interaction.ok)
-      self.assertEqual(interaction.status_code, 200)
-      self.assertEqual(interaction.output_text, 'Hello, I am Carter!')
+        self.assertTrue(interaction.ok)
+        self.assertEqual(interaction.status_code, 200)
+        self.assertEqual(interaction.output_text, 'Hello, I am Carter!')
 
     def test_opener_invalid_player_id(self):
         invalid_player_id = NonStringConvertible()
@@ -42,25 +43,26 @@ class TestCarter(unittest.TestCase):
 
     @responses.activate
     def test_opener_api_error(self):
-      # Mock API response
-      responses.add(
-          responses.POST,
-          URLS["opener"],
-          json={
-              "error": {
-                  "message": "Invalid API key",
-              },
-          },
-          status=403
-      )
+        # Mock API response
+        responses.add(
+            responses.POST,
+            URLS["opener"],
+            json={
+                "error": {
+                    "message": "Invalid API key",
+                },
+            },
+            status=403
+        )
 
-      player_id = "1234"
+        player_id = "api_error"
 
-      interaction = self.carter.opener(player_id)
+        interaction = self.carter.opener(player_id)
 
-      self.assertFalse(interaction.ok)
-      self.assertEqual(interaction.status_code, 403)
-      self.assertEqual(interaction.status_message, "Forbidden")
+        self.assertFalse(interaction.ok)
+        self.assertEqual(interaction.status_code, 403)
+        self.assertEqual(interaction.status_message, "Forbidden")
+
 
 if __name__ == '__main__':
     unittest.main()

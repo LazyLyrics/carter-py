@@ -41,7 +41,7 @@ class TestAsyncCarter(asynctest.TestCase):
         invalid_text = NonStringConvertible()
 
         with self.assertRaises(TypeError):
-            await self.carter.personalise(invalid_text)
+            interaction = await self.carter.personalise(invalid_text)
 
     async def test_personalise_api_error_async(self):
         # Mock API response

@@ -16,46 +16,45 @@ class TestAsyncCarter(asynctest.TestCase):
         self.api_key = os.getenv("CARTER_API_KEY")
         self.carter = AsyncCarter(self.api_key)
 
-    async def test_personalise_success_async(self):
+    async def test_opener_success_async(self):
         # Mock API response
         with aioresponses() as mocked:
             mocked.add(
-                URLS["personalise"],
+                URLS["opener"],
                 method="POST",
                 status=200,
                 payload={
-                    "content": "Hello, I am Carter!",
+                    "sentence": "Hello, I am Carter!",
                 }
             )
 
-            text = "Hi Carter!"
+            player_id = "success"
 
-            interaction = await self.carter.personalise(text)
+            interaction = await self.carter.opener(player_id)
 
             self.assertTrue(interaction.ok)
             self.assertEqual(interaction.status_code, 200)
-            self.assertEqual(interaction.input_text, text)
             self.assertEqual(interaction.output_text, 'Hello, I am Carter!')
 
-    async def test_personalise_invalid_text_async(self):
-        invalid_text = NonStringConvertible()
+    async def test_opener_invalid_player_id_async(self):
+        invalid_player_id = NonStringConvertible()
 
         with self.assertRaises(TypeError):
-            await self.carter.personalise(invalid_text)
+            await self.carter.opener(invalid_player_id)
 
-    async def test_personalise_api_error_async(self):
+    async def test_opener_api_error_async(self):
         # Mock API response
         with aioresponses() as mocked:
             mocked.add(
-                URLS["personalise"],
+                URLS["opener"],
                 method="POST",
                 status=403,
                 reason="Forbidden"
             )
 
-            text = "Hi Carter!"
+            player_id = "api_error"
 
-            interaction = await self.carter.personalise(text)
+            interaction = await self.carter.opener(player_id)
 
             self.assertFalse(interaction.ok)
             self.assertEqual(interaction.status_code, 403)
