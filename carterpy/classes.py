@@ -57,11 +57,23 @@ class Interaction():
         # Payload data
         if "text" in self.payload:
             self.input_text = self.payload["text"]
-        elif "player_id" in self.payload:
+        else:
+            self.input_text = None
+
+        if "player_id" in self.payload:
             self.player_id = self.payload["player_id"]
+        else:
+            self.player_id = None
 
     def __str__(self):
         if self.ok:
             return f"{self.type.capitalize()} interaction {self.id} - {self.input_text} -> {self.output_text}"
         else:
             return f"{self.type.capitalize()} interaction {self.id} - Failed with status code {self.status_code} and message {self.status_message}"
+
+    def print_verbose(self):
+        for key, value in self.__dict__.items():
+            print("=====================================")
+            print(f"{self.type.upper()} INTERACTION {self.id}")
+            print(f"{key}: {value}")
+            print("=====================================")
