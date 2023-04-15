@@ -12,6 +12,8 @@ pip install `carterpy`
 
 This will install the latest version of `carterpy` and its dependencies.
 
+**Note**: `carterpy` has two classes, a Carter class and an AsyncCarter class. The AsyncCarter class is used for asynchronous usage of the API. The Carter class is used for synchronous usage of the API. An example of asynchronous usage can be found below.
+
 ## Usage
 
 To use `carterpy`, you will need to obtain an API key from the Carter website. Once you have your API key, you can use it to create a Carter object and start sending messages. Here's an example:
@@ -37,7 +39,7 @@ print(response.output_text)
 
 `carter.say()` returns an instance of the Interaction class, which contains the response text and other information about the interaction. It takes input text, and optionally a player ID, as arguments. If you don't specify a player ID, it will use a random one. Both must be strings or convertible to strings.
 
-## Opener
+### Opener
 
 Make use of the `/opener` endpoint to get a random opener from the Carter API. This is useful for when you want to start a conversation with a player.
 
@@ -48,7 +50,7 @@ interaction = carter.opener("player123")
 print(interaction.output_text)
 ```
 
-## Personalise
+### Personalise
 
 Make use of the `/personalise` endpoint to personalise any text in the style of your Carter character.
 
@@ -59,7 +61,7 @@ interaction = carter.personalise("Hello, world!")
 print(interaction.output_text)
 ```
 
-## Interactions
+### Interactions
 
 Each request to carter returns an instance of the Interaction class. This contains information about the interaction, including the input text, output text, and forced behaviours. It also contains the status code and message, and the time taken to receive the response. Both the `opener()` and `personalise()` methods return an Interaction object, with the redundant properties removed. Here's an example of the Interaction class:
 
@@ -78,9 +80,9 @@ class Interaction():
     status_message (str): The status message of the response.
 ```
 
-Some properties may not be present if the interaction was not successful. Always check the `ok` property before using the other properties, if there was an error with `carterpy` then all data related to output (output_text, output_audio, forced_behaviours, status_code, status_message) will be `None`. If there was an error with the API, then the `ok` property will be `False` and the `status_code` and `status_message` properties will be populated with the error information, but there will be no output data.
+Some properties may be None if the interaction was not successful. Always check the `ok` property before using the other properties, if there was an error with `carterpy` then all data related to output (`output_text, output_audio, forced_behaviours, status_code, status_message`) will be `None`. If there was an error with the API, then the `ok` property will be `False` and the `status_code` and `status_message` properties will be populated with the error information, but output data will still be None.
 
-## History
+### History
 
 Each successful interaction with your character is stored in `Carter.history`. This is a list of Interaction objects with the most recent first. You can use this to keep track of the interactions that have taken place.
 
@@ -98,20 +100,20 @@ print(carter.history[1].input_text)
 # Hello, world!
 ```
 
-## Upcoming features
+### Upcoming features
 
 - Soon you'll be able to register skills with your agent, this will allow you to trigger functions in your code when `carterpy` detects forced behaviours in the response. This could trigger some other functionality in your code, and even customise the response to add extra data.
 - Improved logging, including the ability to pass your logger to the `Carter` object for debugging.
 
-## `carterjs`
+### `carterjs`
 
 `carterpy` is a Python wrapper for the Carter API. If you're looking for a JavaScript wrapper, check out [`carterjs`](https://github.com/LazyLyrics/carter-js)
 
-## Contributing
+### Contributing
 
 If you would like to contribute to `carterpy`, you can do so by opening an issue or pull request on the GitHub repository.
 
-# Asynchronous Usage
+## Asynchronous Usage
 
 ```python
 import asyncio
