@@ -35,9 +35,9 @@ class Carter:
             "Content-Type": "application/json"
         }
 
-        response = carterRequest(URLS["say"], data, headers=headersList)
+        response_data = carterRequest(URLS["say"], data, headers=headersList)
         time_taken = int((time.perf_counter() - start) * 1000)
-        interaction = Interaction("say", data, response, time_taken)
+        interaction = Interaction("say", data, response_data, time_taken)
         if interaction.ok:
             self.history.insert(0, interaction)
         return interaction

@@ -36,9 +36,9 @@ class AsyncCarter:
             "Accept": "*/*",
             "Content-Type": "application/json"
         }
-        response = await asyncRequest(URLS["say"], data, headersList)
+        response_data = await asyncRequest(URLS["say"], data, headersList)
         time_taken = int((time.perf_counter() - start) * 1000)
-        interaction = Interaction("say", data, response, time_taken)
+        interaction = Interaction("say", data, response_data, time_taken)
         if interaction.ok:
             self.history.insert(0, interaction)
         return interaction
