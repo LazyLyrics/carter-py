@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="carter-py",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     install_requires = [
     "aiohttp==3.8.4",
@@ -18,7 +18,7 @@ setup(
     description="A wrapper for the Carter API",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/LazyLyrics/carterpy",
+    url="https://github.com/LazyLyrics/carter-py",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",

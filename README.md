@@ -1,5 +1,7 @@
 # carter-py: A Python Wrapper for the Carter API
 
+[GitHub](https://github.com/LazyLyrics/carter-py) | [PyPI](https://pypi.org/project/carter-py/) | [Change Log](https://github.com/LazyLyrics/carter-py/blob/main/CHANGELOG.md)
+
 `carter-py` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses with minimal setup, and with the ability to add more complex functionality in upcoming releases.
 
 ## Installation
@@ -18,7 +20,7 @@ To use `carter-py`, you will need to obtain an API key from the Carter website. 
 
 ```python
 
-from `carter-py` import Carter
+from `carterpy` import Carter
 
 
 # Replace YOUR_API_KEY with your actual API key
@@ -59,16 +61,29 @@ interaction = carter.personalise("Hello, world!")
 print(interaction.output_text)
 ```
 
+### Speak
+
+When using any of the methods above, the output audio will be returned by default. This currently introduces significant latency on the API end. If you don't want to receive the audio you have two options. You can set the `speak` parameter to `False` when creating the Carter object, or you can set it to `False` when calling the method. When calling a function `carter-py` will first check if the `speak` parameter is set on the Class. If it is not set, it will then check if the `speak` parameter is set on the method. The default on both is `True`.
+
+```python
+    carter = Carter('your-api-key', speak=False) # True by default
+
+    interaction = carter.say("Hello, world!", "player123") # No audio will be returned, because you have not overridden the default on the class
+
+    interaction = carter.say("Hello, world!", "player123", speak=True) # Audio will be returned, because you have overridden the default on the class
+```
+
 ### Interactions
 
 Each request to carter returns an instance of the Interaction class. This contains information about the interaction, including the input text, output text, and forced behaviours. It also contains the status code and message, and the time taken to receive the response. Both the `opener()` and `personalise()` methods return an Interaction object, with the redundant properties removed. Here's an example of the Interaction class:
 
 ```text
+# Represents a single interaction with the Carter API.
+
 class Interaction():
-    # Represents a single interaction with the Carter API.
     input_text (str): The input text that was sent to the API. # Not present in opener()
     output_text (str): The output text that was received from the API.
-    output_audio (str): The output audio url that was received from the API.
+    output_audio (str): The output audio url that was received from the API (only if speak is True)
     forced_behaviours (array): The forced behaviours that were applied by the API. # Not present in opener() or personalise()
     id (uuid.UUID): The unique identifier of the interaction.
     time_taken (int): The time taken to receive the response, in milliseconds.

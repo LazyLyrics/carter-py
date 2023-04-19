@@ -16,18 +16,21 @@ def carterRequest(url, data, headers):
 
 
 class Carter:
-    def __init__(self, api_key):
+    def __init__(self, api_key, speak=True):
         self.api_key = api_key
         self.history = []
+        self.speak_default = speak
 
-    def say(self, text, player_id):
+    def say(self, text, player_id, speak=None):
         text = convert_to_string("text", text)
         player_id = convert_to_string("player_id", player_id)
         start = time.perf_counter()
+        speak_now = speak if speak is not None else self.speak_default
         data = {
             "text": text,
             "playerId": player_id,
             "key": self.api_key,
+            "speak": speak_now
         }
 
         headersList = {
@@ -42,12 +45,14 @@ class Carter:
             self.history.insert(0, interaction)
         return interaction
 
-    def opener(self, player_id):
+    def opener(self, player_id, speak=None):
         player_id = convert_to_string("player_id", player_id)
         start = time.perf_counter()
+        speak_now = speak if speak is not None else self.speak_default
         data = {
             "playerId": player_id,
             "key": self.api_key,
+            "speak": speak_now
         }
         headersList = {
             "Accept": "*/*",
@@ -61,12 +66,14 @@ class Carter:
             self.history.insert(0, interaction)
         return interaction
 
-    def personalise(self, text):
+    def personalise(self, text, speak=None):
         text = convert_to_string("text", text)
         start = time.perf_counter()
+        speak_now = speak if speak is not None else self.speak_default
         data = {
             "text": text,
             "key": self.api_key,
+            "speak": speak_now
         }
         headersList = {
             "Accept": "*/*",
