@@ -67,10 +67,10 @@ print(interaction.output_text)
 
 ### Speak
 
-When using any of the methods above, the output audio will be returned by default. This currently introduces significant latency on the API end. If you don't want to receive the audio you have two options. You can set the `speak` parameter to `False` when creating the Carter object, or you can set it to `False` when calling the method. When calling a function `carter-py` will first check if the `speak` parameter is set on the Class. If it is not set, it will then check if the `speak` parameter is set on the method. The default on both is `True`.
+When using any of the methods above, the output audio will **not** be returned by default as this currently introduces significant latency on the API end. If you want to receive the audio you have two options. You can set the `speak` parameter to `True` when creating the Carter object, or you can set it to `True` when calling the method. When calling a function `carter-py` will check to see if you have provided a speak parameter, if you have then it will override the default on the class. If you have not provided a speak parameter, then it will use the default on the class. Here's an example:
 
 ```python
-    carter = Carter('your-api-key', speak=False) # True by default
+    carter = Carter('your-api-key') # False by default
 
     interaction = carter.say("Hello, world!", "player123") # No audio will be returned, because you have not overridden the default on the class
 

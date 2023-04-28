@@ -6,6 +6,11 @@ Please note that this project adheres to [Semantic Versioning](https://semver.or
 
 I will continue to build carter-py with the intention of maintaining backwards compatibility, but this is not guaranteed. Previous versions of carter-py are always likely to be outdated as the API progresses. Please consult the changelog for any breaking changes and try to use the latest version of carter-py.
 
+## [0.2.0] - 2023-04-28
+
+### Changed
+
+- Updated the `speak` parameter to be false by default when creating a carter
 
 ## [0.1.3] - 2023-04-19
 

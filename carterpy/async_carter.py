@@ -19,7 +19,7 @@ async def asyncRequest(url, data, headers):
 
 
 class AsyncCarter:
-    def __init__(self, api_key, speak=True):
+    def __init__(self, api_key, speak=False):
         self.api_key = api_key
         self.history = []
         self.speak_default = speak
