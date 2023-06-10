@@ -8,6 +8,8 @@ Please note that this project adheres to [Semantic Versioning](https://semver.or
 
 I will continue to build carter-py with the intention of maintaining backwards compatibility, but this is not guaranteed. Previous versions of carter-py are always likely to be outdated as the API progresses. Please consult the changelog for any breaking changes and try to use the latest version of carter-py.
 
+For support and general chit chat, join the [discord](https://discord.gg/4w2Hs9QU)!
+
 ## Installation
 
 ```bash
