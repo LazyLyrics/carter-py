@@ -4,6 +4,7 @@ import unittest
 from dotenv import load_dotenv
 from carterpy.carter import Carter, URLS
 import responses
+from testing_utils import say_payload, opener_payload, personalise_payload
 load_dotenv()
 
 
@@ -19,29 +20,18 @@ class TestCarter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["say"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                },
-                "input": "INPUT MESSAGE RECEIVED",
-                "forced_behaviours": [
-                    {
-                        "name": "NAME OF BEHAVIOUR"
-                    }
-                ]
-            },
+            json=say_payload,
             status=200
         )
 
         text = "Hi Carter!"
-        player_id = "1234"
+        user_id = "1234"
 
         # Check that the history is initially empty
         self.assertEqual(len(self.carter.history), 0)
 
         # Perform a successful say interaction
-        interaction = self.carter.say(text, player_id)
+        interaction = self.carter.say(text, user_id)
 
         # Check that the history contains one interaction
         self.assertEqual(len(self.carter.history), 1)
@@ -53,17 +43,17 @@ class TestCarter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["opener"],
-            json={"sentence": "RESPONSE FROM OPENER"},
+            json=opener_payload,
             status=200
         )
 
-        player_id = "history_success"
+        user_id = "history_success"
 
         # Check that the history is initially empty
         self.assertEqual(len(self.carter.history), 0)
 
         # Perform a successful opener interaction
-        interaction = self.carter.opener(player_id)
+        interaction = self.carter.opener(user_id)
 
         # Check that the history contains one interaction
         self.assertEqual(len(self.carter.history), 1)
@@ -75,7 +65,7 @@ class TestCarter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["personalise"],
-            json={"content": "RESPONSE FROM PERSONALISE"},
+            json=personalise_payload,
             status=200
         )
 
@@ -85,7 +75,7 @@ class TestCarter(unittest.TestCase):
         self.assertEqual(len(self.carter.history), 0)
 
         # Perform a successful personalise interaction
-        interaction = self.carter.personalise(text)
+        interaction = self.carter.personalise(text, "1234")
 
         # Check that the history contains no interaction
         self.assertEqual(len(self.carter.history), 0)
@@ -101,13 +91,13 @@ class TestCarter(unittest.TestCase):
         )
 
         text = "Hi Carter!"
-        player_id = "1234"
+        user_id = "1234"
 
         # Check that the history is initially empty
         self.assertEqual(len(self.carter.history), 0)
 
         # Perform an unsuccessful say interaction
-        interaction = self.carter.say(text, player_id)
+        interaction = self.carter.say(text, user_id)
 
         # Check that the history is still empty
         self.assertEqual(len(self.carter.history), 0)
@@ -122,13 +112,13 @@ class TestCarter(unittest.TestCase):
             status=400
         )
 
-        player_id = "history_fail"
+        user_id = "history_fail"
 
         # Check that the history is initially empty
         self.assertEqual(len(self.carter.history), 0)
 
         # Perform an unsuccessful opener interaction
-        interaction = self.carter.opener(player_id)
+        interaction = self.carter.opener(user_id)
 
         # Check that the history is still empty
         self.assertEqual(len(self.carter.history), 0)

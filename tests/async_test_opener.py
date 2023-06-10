@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from carterpy.async_carter import AsyncCarter, URLS
 from aioresponses import aioresponses
 from helpers import NonStringConvertible
+from testing_utils import say_payload, opener_payload, personalise_payload
 
 load_dotenv()
 
@@ -23,24 +24,22 @@ class TestAsyncCarter(asynctest.TestCase):
                 URLS["opener"],
                 method="POST",
                 status=200,
-                payload={
-                    "sentence": "Hello, I am Carter!",
-                }
+                payload=opener_payload
             )
 
-            player_id = "success"
+            user_id = "success"
 
-            interaction = await self.carter.opener(player_id)
+            interaction = await self.carter.opener(user_id)
 
             self.assertTrue(interaction.ok)
             self.assertEqual(interaction.status_code, 200)
-            self.assertEqual(interaction.output_text, 'Hello, I am Carter!')
+            self.assertEqual(interaction.output_text, 'RESPONSE FROM OPENER')
 
-    async def test_opener_invalid_player_id_async(self):
-        invalid_player_id = NonStringConvertible()
+    async def test_opener_invalid_user_id_async(self):
+        invalid_user_id = NonStringConvertible()
 
         with self.assertRaises(TypeError):
-            await self.carter.opener(invalid_player_id)
+            await self.carter.opener(invalid_user_id)
 
     async def test_opener_api_error_async(self):
         # Mock API response
@@ -52,9 +51,9 @@ class TestAsyncCarter(asynctest.TestCase):
                 reason="Forbidden"
             )
 
-            player_id = "api_error"
+            user_id = "api_error"
 
-            interaction = await self.carter.opener(player_id)
+            interaction = await self.carter.opener(user_id)
 
             self.assertFalse(interaction.ok)
             self.assertEqual(interaction.status_code, 403)

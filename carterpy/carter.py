@@ -21,14 +21,14 @@ class Carter:
         self.history = []
         self.speak_default = speak
 
-    def say(self, text, player_id, speak=None):
+    def say(self, text, user_id, speak=None):
         text = convert_to_string("text", text)
-        player_id = convert_to_string("player_id", player_id)
+        user_id = convert_to_string("user_id", user_id)
         start = time.perf_counter()
         speak_now = speak if speak is not None else self.speak_default
         data = {
             "text": text,
-            "playerId": player_id,
+            "user_id": user_id,
             "key": self.api_key,
             "speak": speak_now
         }
@@ -45,14 +45,15 @@ class Carter:
             self.history.insert(0, interaction)
         return interaction
 
-    def opener(self, player_id, speak=None):
-        player_id = convert_to_string("player_id", player_id)
+    def opener(self, user_id, speak=None):
+        user_id = convert_to_string("user_id", user_id)
         start = time.perf_counter()
         speak_now = speak if speak is not None else self.speak_default
         data = {
-            "playerId": player_id,
+            "user_id": user_id,
             "key": self.api_key,
-            "speak": speak_now
+            "speak": speak_now,
+            "personal": True
         }
         headersList = {
             "Accept": "*/*",
@@ -66,14 +67,15 @@ class Carter:
             self.history.insert(0, interaction)
         return interaction
 
-    def personalise(self, text, speak=None):
+    def personalise(self, text, user_id, speak=None):
         text = convert_to_string("text", text)
         start = time.perf_counter()
         speak_now = speak if speak is not None else self.speak_default
         data = {
             "text": text,
             "key": self.api_key,
-            "speak": speak_now
+            "speak": speak_now,
+            "user_id": user_id
         }
         headersList = {
             "Accept": "*/*",

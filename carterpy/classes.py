@@ -53,7 +53,7 @@ class Interaction():
 
         # Payload data
         self.input_text = self.payload.get("text", self.type)
-        self.player_id = self.payload.get("player_id")
+        self.user_id = self.payload.get("user_id")
 
 
     def __str__(self):

@@ -143,7 +143,7 @@ async def main():
     async_carter = AsyncCarter(api_key)
 
     # with carter object already created
-    interaction = await async_carter.opener("player123")
+    interaction = await async_carter.say("hi there!", "player123")
     personalise = await async_carter.personalise("Hello, world!")
     opener = await async_carter.opener("player123")
     print(interaction.output_text)

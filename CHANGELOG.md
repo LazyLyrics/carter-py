@@ -6,6 +6,16 @@ Please note that this project adheres to [Semantic Versioning](https://semver.or
 
 I will continue to build carter-py with the intention of maintaining backwards compatibility, but this is not guaranteed. Previous versions of carter-py are always likely to be outdated as the API progresses. Please consult the changelog for any breaking changes and try to use the latest version of carter-py.
 
+## [1.0] - 2023-05-01 - Switches to Carter Unstable API
+
+This release has bumped a major version number to reflect both major usage changes as well as a milestone in the API.
+
+### Changed
+
+- All methods now use the unstable API. This change doesn't affect usage but allows carter-py users to benefit from the latest features.
+- The `player_id` parameter has been renamed to `user_id` in all methods to reflect the change in the API. THIS CHANGE IS BREAKING
+- `carter.personalise()` now requires a `user_id` parameter. THIS CHANGE IS BREAKING.
+
 ## [0.2.0] - 2023-04-28
 
 ### Changed

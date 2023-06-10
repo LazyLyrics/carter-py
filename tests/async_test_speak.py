@@ -4,6 +4,7 @@ from carterpy.async_carter import AsyncCarter
 from dotenv import load_dotenv
 from aioresponses import aioresponses
 from carterpy.utils import URLS
+from testing_utils import say_payload, opener_payload, personalise_payload
 
 load_dotenv()
 
@@ -21,24 +22,19 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["say"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=say_payload
             )
 
             text = "This is a test message."
-            player_id = "1234"
+            user_id = "1234"
             carter = AsyncCarter(self.api_key, speak=True)
 
             # Test when speak is not provided
-            interaction = await carter.say(text, player_id)
+            interaction = await carter.say(text, user_id)
             self.assertTrue(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.say(text, player_id, speak=False)
+            interaction = await carter.say(text, user_id, speak=False)
             self.assertFalse(interaction.payload["speak"])
 
     async def test_say_speak_false_on_init(self):
@@ -48,24 +44,19 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["say"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=say_payload
             )
 
             text = "This is a test message."
-            player_id = "1234"
+            user_id = "1234"
             carter = AsyncCarter(self.api_key, speak=False)
 
             # Test when speak is not provided
-            interaction = await carter.say(text, player_id)
+            interaction = await carter.say(text, user_id)
             self.assertFalse(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.say(text, player_id, speak=True)
+            interaction = await carter.say(text, user_id, speak=True)
             self.assertTrue(interaction.payload["speak"])
 
     async def test_say_speak_default_on_init(self):
@@ -75,12 +66,7 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["say"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=say_payload
             )
 
             text = "This is a test message."
@@ -89,11 +75,11 @@ class TestSpeakParameter(asynctest.TestCase):
 
             # Test when speak is not provided
             interaction = await carter.say(text, player_id)
-            self.assertTrue(interaction.payload["speak"])
+            self.assertFalse(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.say(text, player_id, speak=False)
-            self.assertFalse(interaction.payload["speak"])
+            interaction = await carter.say(text, player_id, speak=True)
+            self.assertTrue(interaction.payload["speak"])
 
     async def test_opener_speak_true_on_init(self):
         # Mock API responses
@@ -102,12 +88,7 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["opener"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=opener_payload
             )
 
             player_id = "1234"
@@ -128,12 +109,7 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["opener"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=opener_payload
             )
 
             player_id = "1234"
@@ -154,12 +130,7 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["opener"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=opener_payload
             )
 
             player_id = "1234"
@@ -167,11 +138,11 @@ class TestSpeakParameter(asynctest.TestCase):
 
             # Test when speak is not provided
             interaction = await carter.opener(player_id)
-            self.assertTrue(interaction.payload["speak"])
+            self.assertFalse(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.opener(player_id, speak=False)
-            self.assertFalse(interaction.payload["speak"])
+            interaction = await carter.opener(player_id, speak=True)
+            self.assertTrue(interaction.payload["speak"])
 
     async def test_personalise_speak_true_on_init(self):
         # Mock API responses
@@ -180,23 +151,18 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["personalise"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=personalise_payload
             )
 
             text = "This is a test message."
             carter = AsyncCarter(self.api_key, speak=True)
 
             # Test when speak is not provided
-            interaction = await carter.personalise(text)
+            interaction = await carter.personalise(text, "user_id")
             self.assertTrue(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.personalise(text, speak=False)
+            interaction = await carter.personalise(text, "user_id", speak=False)
             self.assertFalse(interaction.payload["speak"])
 
     async def test_personalise_speak_false_on_init(self):
@@ -206,23 +172,18 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["personalise"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=personalise_payload
             )
 
             text = "This is a test message."
             carter = AsyncCarter(self.api_key, speak=False)
 
             # Test when speak is not provided
-            interaction = await carter.personalise(text)
+            interaction = await carter.personalise(text, "user_id")
             self.assertFalse(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.personalise(text, speak=True)
+            interaction = await carter.personalise(text, "user_id", speak=True)
             self.assertTrue(interaction.payload["speak"])
 
 
@@ -233,24 +194,19 @@ class TestSpeakParameter(asynctest.TestCase):
                 URLS["personalise"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    }
-                }
+                payload=personalise_payload
             )
 
             text = "This is a test message."
             carter = AsyncCarter(self.api_key)
 
             # Test when speak is not provided
-            interaction = await carter.personalise(text)
-            self.assertTrue(interaction.payload["speak"])
+            interaction = await carter.personalise(text, user_id="user_id")
+            self.assertFalse(interaction.payload["speak"])
 
             # Test when speak is overridden
-            interaction = await carter.personalise(text, speak=False)
-            self.assertFalse(interaction.payload["speak"])
+            interaction = await carter.personalise(text, user_id="user_id", speak=True)
+            self.assertTrue(interaction.payload["speak"])
 
 if __name__ == '__main__':
     asynctest.main()

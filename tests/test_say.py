@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from carterpy.carter import Carter, URLS
 import responses
 from helpers import NonStringConvertible
+from testing_utils import say_payload, opener_payload, personalise_payload
 load_dotenv()
 
 
@@ -20,25 +21,14 @@ class TestCarter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["say"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                },
-                "input": "INPUT MESSAGE RECEIVED",
-                "forced_behaviours": [
-                    {
-                        "name": "NAME OF BEHAVIOUR"
-                    }
-                ]
-            },
+            json=say_payload,
             status=200
         )
 
         text = "This is another test message."
-        player_id = "1234"
+        user_id = "1234"
 
-        interaction = self.carter.say(text, player_id)
+        interaction = self.carter.say(text, user_id)
 
         self.assertTrue(interaction.ok)
         self.assertEqual(interaction.status_code, 200)
@@ -48,17 +38,17 @@ class TestCarter(unittest.TestCase):
 
     def test_say_invalid_text(self):
         invalid_text = NonStringConvertible()
-        player_id = "1234"
+        user_id = "1234"
 
         with self.assertRaises(TypeError) as context:
-            self.carter.say(invalid_text, player_id)
+            self.carter.say(invalid_text, user_id)
 
-    def test_say_invalid_player_id(self):
+    def test_say_invalid_user_id(self):
         text = "Hi Carter!"
-        invalid_player_id = NonStringConvertible()
+        invalid_user_id = NonStringConvertible()
 
         with self.assertRaises(TypeError):
-            self.carter.say(text, invalid_player_id)
+            self.carter.say(text, invalid_user_id)
 
     @responses.activate
     def test_say_api_error(self):
@@ -75,9 +65,9 @@ class TestCarter(unittest.TestCase):
         )
 
         text = "Hi Carter!"
-        player_id = "1234"
+        user_id = "1234"
 
-        interaction = self.carter.say(text, player_id)
+        interaction = self.carter.say(text, user_id)
 
         self.assertFalse(interaction.ok)
         self.assertEqual(interaction.status_code, 403)

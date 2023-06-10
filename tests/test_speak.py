@@ -4,6 +4,7 @@ from carterpy.carter import Carter
 from dotenv import load_dotenv
 import responses
 from carterpy.utils import URLS
+from testing_utils import say_payload, opener_payload, personalise_payload
 
 load_dotenv()
 
@@ -20,25 +21,20 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["say"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=say_payload,
             status=200
         )
 
         text = "This is a test message."
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key, speak=True)
 
         # Test when speak is not provided
-        interaction = carter.say(text, player_id)
+        interaction = carter.say(text, user_id)
         self.assertTrue(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.say(text, player_id, speak=False)
+        interaction = carter.say(text, user_id, speak=False)
         self.assertFalse(interaction.payload["speak"])
 
     @responses.activate
@@ -47,25 +43,20 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["say"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=say_payload,
             status=200
         )
 
         text = "This is a test message."
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key, speak=False)
 
         # Test when speak is not provided
-        interaction = carter.say(text, player_id)
+        interaction = carter.say(text, user_id)
         self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.say(text, player_id, speak=True)
+        interaction = carter.say(text, user_id, speak=True)
         self.assertTrue(interaction.payload["speak"])
 
     @responses.activate
@@ -74,26 +65,21 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["say"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=say_payload,
             status=200
         )
 
         text = "This is a test message."
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key)
 
         # Test when speak is not provided
-        interaction = carter.say(text, player_id)
-        self.assertTrue(interaction.payload["speak"])
+        interaction = carter.say(text, user_id)
+        self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.say(text, player_id, speak=False)
-        self.assertFalse(interaction.payload["speak"])
+        interaction = carter.say(text, user_id, speak=True)
+        self.assertTrue(interaction.payload["speak"])
 
     @responses.activate
     def test_opener_speak_true_on_init(self):
@@ -101,24 +87,19 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["opener"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=opener_payload,
             status=200
         )
 
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key, speak=True)
 
         # Test when speak is not provided
-        interaction = carter.opener(player_id)
+        interaction = carter.opener(user_id)
         self.assertTrue(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.opener(player_id, speak=False)
+        interaction = carter.opener(user_id, speak=False)
         self.assertFalse(interaction.payload["speak"])
 
     @responses.activate
@@ -127,24 +108,19 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["opener"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=opener_payload,
             status=200
         )
 
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key, speak=False)
 
         # Test when speak is not provided
-        interaction = carter.opener(player_id)
+        interaction = carter.opener(user_id)
         self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.opener(player_id, speak=True)
+        interaction = carter.opener(user_id, speak=True)
         self.assertTrue(interaction.payload["speak"])
 
     @responses.activate
@@ -153,25 +129,20 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["opener"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=opener_payload,
             status=200
         )
 
-        player_id = "1234"
+        user_id = "1234"
         carter = Carter(self.api_key)
 
         # Test when speak is not provided
-        interaction = carter.opener(player_id)
-        self.assertTrue(interaction.payload["speak"])
+        interaction = carter.opener(user_id)
+        self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.opener(player_id, speak=False)
-        self.assertFalse(interaction.payload["speak"])
+        interaction = carter.opener(user_id, speak=True)
+        self.assertTrue(interaction.payload["speak"])
 
     @responses.activate
     def test_personalise_speak_true_on_init(self):
@@ -179,12 +150,7 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["personalise"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=personalise_payload,
             status=200
         )
 
@@ -192,11 +158,11 @@ class TestSpeakParameter(unittest.TestCase):
         carter = Carter(self.api_key, speak=True)
 
         # Test when speak is not provided
-        interaction = carter.personalise(text)
+        interaction = carter.personalise(text, "user_id")
         self.assertTrue(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.personalise(text, speak=False)
+        interaction = carter.personalise(text, "user_id", speak=False)
         self.assertFalse(interaction.payload["speak"])
 
     @responses.activate
@@ -205,12 +171,7 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["personalise"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=personalise_payload,
             status=200
         )
 
@@ -218,11 +179,11 @@ class TestSpeakParameter(unittest.TestCase):
         carter = Carter(self.api_key, speak=False)
 
         # Test when speak is not provided
-        interaction = carter.personalise(text)
+        interaction = carter.personalise(text, "user_id")
         self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.personalise(text, speak=True)
+        interaction = carter.personalise(text, "user_id", speak=True)
         self.assertTrue(interaction.payload["speak"])
 
     @responses.activate
@@ -231,12 +192,7 @@ class TestSpeakParameter(unittest.TestCase):
         responses.add(
             responses.POST,
             URLS["personalise"],
-            json={
-                "output": {
-                    "text": "RESPONSE FROM CHARACTER",
-                    "audio": "AUDIO ID"
-                }
-            },
+            json=personalise_payload,
             status=200
         )
 
@@ -244,12 +200,12 @@ class TestSpeakParameter(unittest.TestCase):
         carter = Carter(self.api_key)
 
         # Test when speak is not provided
-        interaction = carter.personalise(text)
-        self.assertTrue(interaction.payload["speak"])
+        interaction = carter.personalise(text, "user_id")
+        self.assertFalse(interaction.payload["speak"])
 
         # Test when speak is overridden
-        interaction = carter.personalise(text, speak=False)
-        self.assertFalse(interaction.payload["speak"])
+        interaction = carter.personalise(text, "user_id", speak=True)
+        self.assertTrue(interaction.payload["speak"])
 
 
 

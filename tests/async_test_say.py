@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from carterpy.async_carter import AsyncCarter, URLS
 from aioresponses import aioresponses
 from helpers import NonStringConvertible
+from testing_utils import say_payload, opener_payload, personalise_payload
 load_dotenv()
 
 
@@ -22,24 +23,13 @@ class TestAsyncCarter(asynctest.TestCase):
                 URLS["say"],
                 method="POST",
                 status=200,
-                payload={
-                    "output": {
-                        "text": "RESPONSE FROM CHARACTER",
-                        "audio": "AUDIO ID"
-                    },
-                    "input": "INPUT MESSAGE RECEIVED",
-                    "forced_behaviours": [
-                        {
-                            "name": "NAME OF BEHAVIOUR"
-                        }
-                    ]
-                }
+                payload=say_payload
             )
 
             text = "Hi Carter!"
-            player_id = "1234"
+            user_id = "1234"
 
-            interaction = await self.carter.say(text, player_id)
+            interaction = await self.carter.say(text, user_id)
 
             self.assertTrue(interaction.ok)
             self.assertEqual(interaction.status_code, 200)
@@ -49,17 +39,17 @@ class TestAsyncCarter(asynctest.TestCase):
 
     async def test_say_invalid_text_async(self):
         invalid_text = NonStringConvertible()
-        player_id = "1234"
+        user_id = "1234"
 
         with self.assertRaises(TypeError) as context:
-            await self.carter.say(invalid_text, player_id)
+            await self.carter.say(invalid_text, user_id)
 
-    async def test_say_invalid_player_id_async(self):
+    async def test_say_invalid_user_id_async(self):
         text = "Hi Carter!"
-        invalid_player_id = NonStringConvertible()
+        invalid_user_id = NonStringConvertible()
 
         with self.assertRaises(TypeError):
-            await self.carter.say(text, invalid_player_id)
+            await self.carter.say(text, invalid_user_id)
 
     async def test_say_api_error_async(self):
         # Mock API response
@@ -72,9 +62,9 @@ class TestAsyncCarter(asynctest.TestCase):
             )
 
             text = "Hi Carter!"
-            player_id = "1234"
+            user_id = "1234"
 
-            interaction = await self.carter.say(text, player_id)
+            interaction = await self.carter.say(text, user_id)
 
             self.assertFalse(interaction.ok)
             self.assertEqual(interaction.status_code, 403)
