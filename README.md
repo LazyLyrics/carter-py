@@ -1,6 +1,6 @@
 # carter-py: A Python Wrapper for the Carter API
 
-[GitHub](https://github.com/LazyLyrics/carter-py) | [PyPI](https://pypi.org/project/carter-py/) | [Change Log](https://github.com/LazyLyrics/carter-py/blob/main/CHANGELOG.md)| [Docs](https://lazylyrics.gitbook.io/carter-py/)
+[GitHub](https://github.com/LazyLyrics/carter-py) | [PyPI](https://pypi.org/project/carter-py/) | [Change Log](https://github.com/LazyLyrics/carter-py/blob/main/CHANGELOG.md)| [Docs](https://lazylyrics.gitbook.io/carter-py-v1/)
 
 `carter-py` is a Python package that provides a simple wrapper for the Carter API. It allows you to easily send text messages to the API and receive responses with minimal setup, and with the ability to add more complex functionality in upcoming releases.
 
@@ -41,7 +41,7 @@ print(response.output_text)
 
 ```
 
-`carter.say()` returns an instance of the Interaction class, which contains the response text and other information about the interaction. It takes input text, and optionally a player ID, as arguments. If you don't specify a player ID, it will use a random one. Both must be strings or convertible to strings.
+`carter.say()` returns an instance of the Interaction class, which contains the response text and other information about the interaction. It takes input text, and optionally a user_id, as arguments. If you don't specify a player ID, it will use a random one. Both must be strings or convertible to strings.
 
 ### Opener
 
@@ -61,7 +61,7 @@ Make use of the `/personalise` endpoint to personalise any text in the style of 
 ```python
 # with carter object already created
 
-interaction = carter.personalise("Hello, world!")
+interaction = carter.personalise("Hello, world!", "player_id")
 print(interaction.output_text)
 ```
 
