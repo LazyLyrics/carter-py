@@ -1,9 +1,9 @@
 import datetime
 
 URLS = {
-    "say": "https://unstable.carterlabs.ai/api/say",
-    "opener": "https://unstable.carterlabs.ai/api/opener",
-    "personalise": "https://unstable.carterlabs.ai/api/personalise",
+    "say": "https://api.carterlabs.ai/api/say",
+    "opener": "https://api.carterlabs.ai/api/opener",
+    "personalise": "https://api.carterlabs.ai/api/personalise",
 }
 
 def convert_to_string(variable_name, value):
