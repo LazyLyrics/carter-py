@@ -6,9 +6,13 @@ Please note that this project adheres to [Semantic Versioning](https://semver.or
 
 I will continue to build carter-py with the intention of maintaining backwards compatibility, but this is not guaranteed. Previous versions of carter-py are always likely to be outdated as the API progresses. Please consult the changelog for any breaking changes and try to use the latest version of carter-py.
 
+## [1.02] 2023-06-29 - Fixes bug in urls
+
+Fixes an incorrect URL in the latest update.
+
 ## [1.01] 2023-06-01 - Switches back to Carter stable URLs
 
-This release has bumped a minor version number to reflect a change in the API.
+This release has bumped a patch version number to reflect a change in the API.
 
 ### Changed
 
