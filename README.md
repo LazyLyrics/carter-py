@@ -13,7 +13,7 @@ For support and general chit chat, join the [discord](https://discord.gg/4w2Hs9Q
 ## Installation
 
 ```bash
-pip install `carter-py`
+pip install carter-py
 ```
 
 This will install the latest version of `carter-py` and its dependencies.
@@ -26,7 +26,7 @@ To use `carter-py`, you will need to obtain an API key from the Carter website. 
 
 ```python
 
-from `carterpy` import Carter
+from carterpy import Carter
 
 
 # Replace YOUR_API_KEY with your actual API key
