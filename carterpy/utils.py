@@ -1,7 +1,7 @@
 import datetime
 
 URLS = {
-    "say": "https://api.carterlabs.ai/api/say",
+    "say": "https://api.carterlabs.ai/api/chat",
     "opener": "https://api.carterlabs.ai/api/opener",
     "personalise": "https://api.carterlabs.ai/api/personalise",
 }
